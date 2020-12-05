@@ -1,6 +1,8 @@
 defmodule ProctoringWeb.Router do
   use ProctoringWeb, :router
 
+  import ProctoringWeb.Cors
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -11,6 +13,12 @@ defmodule ProctoringWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug ProctoringWeb.Plugs.Cors, []
+    plug ProctoringWeb.AuthenticationPlug, []
+  end
+
+  pipeline :require_auth do
+    plug ProctoringWeb.RequireAuthenticationPlug, []
   end
 
   scope "/", ProctoringWeb do
@@ -21,9 +29,16 @@ defmodule ProctoringWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ProctoringWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", ProctoringWeb do
+    pipe_through :api
+
+    opts(post "/login", AuthController, :login)
+
+    pipe_through :require_auth
+    opts(post "/refresh_token", AuthController, :refresh_token)
+    opts(resources "/users", UserController, except: [:new, :edit])
+    opts(get "/users/room/:room", UserController, :list_users_in_room)
+  end
 
   # Enables LiveDashboard only for development
   #

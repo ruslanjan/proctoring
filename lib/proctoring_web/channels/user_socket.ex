@@ -1,9 +1,13 @@
 defmodule ProctoringWeb.UserSocket do
   use Phoenix.Socket
 
+  alias Proctoring.Auth
+  alias Proctoring.Accounts
+
   ## Channels
   # channel "room:*", ProctoringWeb.RoomChannel
   channel "call", ProctoringWeb.CallChannel
+  channel "proctor:*", ProctoringWeb.ProctorChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -17,8 +21,15 @@ defmodule ProctoringWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket, _connect_info) do
+    with {:ok, user_id} <- Auth.verify_auth_token(token),
+         user <- Accounts.get_user(user_id),
+         true <- user != nil do
+      {:ok, assign(socket, :current_user, user)}
+    else
+      _ ->
+        :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
