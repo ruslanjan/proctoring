@@ -11,10 +11,7 @@ use Mix.Config
 # before starting your production server.
 config :proctoring, ProctoringWeb.Endpoint,
   url: [host: "proc.tau.moe", port: 5000],
-  check_origin: [
-    "http://prco.tau.moe",
-    "http://localhost.com",
-  ],
+  check_origin: false,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
