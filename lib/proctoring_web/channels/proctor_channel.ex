@@ -5,8 +5,13 @@ defmodule ProctoringWeb.ProctorChannel do
     {:ok, socket}
   end
 
-  def join("proctor:" <> _room, _payload, socket) do
-    {:ok, socket}
+  def join("proctor:" <> room, _payload, socket) do
+    user = socket.assigns[:current_user]
+    if user.room != room and not user.is_admin do
+      {:error, "wrong_room"}
+    else
+      {:ok, socket}
+    end
   end
 
   def handle_in("proctor_joined", %{"body" => body}, socket) do

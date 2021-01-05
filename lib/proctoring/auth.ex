@@ -79,4 +79,8 @@ defmodule Proctoring.Auth do
         List.last(String.split(token, "Bearer "))
     end
   end
+
+  def verify_microsoft_0auth_id_token(token) do
+
+  end
 end

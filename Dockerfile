@@ -4,8 +4,10 @@ FROM bitwalker/alpine-elixir-phoenix:latest
 EXPOSE 5000
 ENV PORT=5000 MIX_ENV=prod
 
-ENV DATABASE_URL=postgres://postgres:postgres@db:5432/proctoring
-ENV SECRET_KEY_BASE=Q/395WH64Ld+IbUCiTngx3NOSfsLriD5K75mLajCIj+/mQLsC1QFGfviImzXzhOV
+ARG DATABASE_URL=postgres://postgres:postgres@db:5432/proctoring
+ARG SECRET_KEY_BASE=Q/395WH64Ld+IbUCiTngx3NOSfsLriD5K75mLajCIj+/mQLsC1QFGfviImzXzhOV
+ENV DATABASE_URL=$DATABASE_URL
+ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
 
 # Cache elixir deps
 ADD mix.exs mix.lock ./
