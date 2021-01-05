@@ -7,7 +7,8 @@ defmodule ProctoringWeb.ProctorChannel do
 
   def join("proctor:" <> room, _payload, socket) do
     user = socket.assigns[:current_user]
-    if user.room != room and not user.is_admin do
+    IO.inspect(room)
+    if Integer.to_string(user.room) != room and not user.is_admin do
       {:error, "wrong_room"}
     else
       {:ok, socket}
