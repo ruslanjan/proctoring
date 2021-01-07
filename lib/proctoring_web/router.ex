@@ -1,7 +1,7 @@
 defmodule ProctoringWeb.Router do
   use ProctoringWeb, :router
 
-  import ProctoringWeb.Cors
+  use ProctoringWeb.Cors
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -36,8 +36,16 @@ defmodule ProctoringWeb.Router do
 
     pipe_through :require_auth
     opts(post "/refresh_token", AuthController, :refresh_token)
+    opts(get "/check-auth", AuthController, :check_auth)
     opts(resources "/users", UserController, except: [:new, :edit])
     opts(get "/users/room/:room", UserController, :list_users_in_room)
+
+    opts(get "/chat/messages/my", ChatController, :get_my_messages)
+    opts(get "/chat/messages/to-user/:to_user_id", ChatController, :get_user_messages)
+    opts(get "/chat/messages/system", ChatController, :get_system_messages)
+    opts(post "/chat/messages/to-user/:to_user_id", ChatController, :send_message_to_user)
+    opts(post "/chat/messages/system", ChatController, :send_system_message)
+    opts(post "/chat/messages/proctors", ChatController, :send_message_to_proctors)
   end
 
   # Enables LiveDashboard only for development

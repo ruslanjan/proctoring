@@ -8,6 +8,7 @@ defmodule ProctoringWeb.UserSocket do
   # channel "room:*", ProctoringWeb.RoomChannel
   channel "call", ProctoringWeb.CallChannel
   channel "proctor:*", ProctoringWeb.ProctorChannel
+  channel "chat", ProctoringWeb.ChatChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

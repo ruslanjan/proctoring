@@ -14,15 +14,26 @@ defmodule ProctoringWeb.Cors do
   defmacro opts({name, _, args} = fun) do
     quote do
       unquote(fun)
-      options unquote(Enum.at(args, 0)), unquote(Enum.at(args, 1)), :options
+      if unquote(Enum.at(args, 0)) not in @cors_routes do
+        @cors_routes @cors_routes ++ [unquote(Enum.at(args, 0))]
+        options unquote(Enum.at(args, 0)), unquote(Enum.at(args, 1)), :options
 
-      unquote(
-        if name == :resources do
-          quote do
-            options unquote(Enum.at(args, 0)) <> "/:id", unquote(Enum.at(args, 1)), :options, unquote(Enum.at(args, 2))
+        unquote(
+          if name == :resources do
+            quote do
+              @cors_routes @cors_routes ++ [unquote(Enum.at(args, 0)) <> "/:id"]
+              options unquote(Enum.at(args, 0)) <> "/:id", unquote(Enum.at(args, 1)), :options, unquote(Enum.at(args, 2))
+            end
           end
-        end
-      )
+        )
+      end
+    end
+  end
+
+  defmacro __using__(_) do
+    quote do
+      @cors_routes []
+      import ProctoringWeb.Cors
     end
   end
 end

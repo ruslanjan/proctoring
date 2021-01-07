@@ -10,6 +10,10 @@ use Mix.Config
 config :proctoring,
   ecto_repos: [Proctoring.Repo]
 
+
+config :proctoring, Proctoring.Repo, migration_timestamps: [type: :timestamptz]
+
+
 # Configures the endpoint
 config :proctoring, ProctoringWeb.Endpoint,
   url: [host: "localhost"],

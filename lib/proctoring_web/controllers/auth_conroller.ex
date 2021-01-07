@@ -20,4 +20,10 @@ defmodule ProctoringWeb.AuthController do
         render(conn, "login.json", token: token, user: user)
     end
   end
+
+
+  def check_auth(conn, _params) do
+    user = conn.assigns[:current_user]
+    render(conn, "authenticated.json", user: user)
+  end
 end

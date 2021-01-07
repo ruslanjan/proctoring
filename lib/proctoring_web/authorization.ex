@@ -47,6 +47,19 @@ defmodule ProctoringWeb.Authorization do
     end
   end
 
+  def create?(Proctoring.Chat.Message) do
+    fn conn ->
+      with %User{} = user <- conn.assigns[:current_user],
+         true <- user != nil,
+         true <- user.is_admin or user.is_proctor do
+          true
+      else
+        _ ->
+          false
+      end
+    end
+  end
+
   def delete?(Proctoring.Accounts.User) do
     fn conn ->
       with %User{} = user <- conn.assigns[:current_user],
@@ -77,6 +90,19 @@ defmodule ProctoringWeb.Authorization do
     fn conn ->
       with %User{} = user <- conn.assigns[:current_user],
          true <- user != nil do
+          true
+      else
+        _ ->
+          false
+      end
+    end
+  end
+
+  def view?(Proctoring.Chat.Message) do
+    fn conn ->
+      with %User{} = user <- conn.assigns[:current_user],
+         true <- user != nil,
+         true <- user.is_admin or user.is_proctor do
           true
       else
         _ ->

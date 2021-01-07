@@ -1,7 +1,9 @@
 defmodule Proctoring.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  @timestamps_opts [type: :utc_datetime]
 
+  @derive {Jason.Encoder, only: [:id, :name, :username, :room, :is_proctor, :is_admin]}
   schema "users" do
     field :name, :string
     field :password, :string
