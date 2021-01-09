@@ -17,7 +17,13 @@ defmodule ProctoringWeb.ChatView do
       from: message.from,
       to_user: render_one(message.to_user, UserView, "user.json"),
       message: message.message,
+      has_image: message.has_image,
+      image_extension: message.image_extension,
       inserted_at: message.inserted_at,
     }
+  end
+
+  def render("image.json", %{image: image}) do
+    %{image: image}
   end
 end

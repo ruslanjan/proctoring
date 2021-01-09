@@ -20,7 +20,7 @@ defmodule Proctoring.MixProject do
   def application do
     [
       mod: {Proctoring.Application, []},
-      extra_applications: [:logger, :runtime_tools, :httpoison]
+      extra_applications: [:logger, :runtime_tools, :httpoison, :mime]
     ]
   end
 
@@ -47,6 +47,7 @@ defmodule Proctoring.MixProject do
       {:httpoison, "~> 1.7"},
       {:joken, "~> 2.3"},
       {:jason, "~> 1.0"},
+      {:mime, "~> 1.2"},
       {:plug_cowboy, "~> 2.0"}
     ]
   end

@@ -34,10 +34,15 @@ defmodule ProctoringWeb.Router do
 
     opts(post "/login", AuthController, :login)
 
+
+    opts(get "/chat/messages/get-image/:file", ChatController, :get_image)
+
+
     pipe_through :require_auth
     opts(post "/refresh_token", AuthController, :refresh_token)
     opts(get "/check-auth", AuthController, :check_auth)
     opts(resources "/users", UserController, except: [:new, :edit])
+
     opts(get "/users/room/:room", UserController, :list_users_in_room)
 
     opts(get "/chat/messages/my", ChatController, :get_my_messages)
