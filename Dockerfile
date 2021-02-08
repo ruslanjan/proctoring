@@ -1,5 +1,7 @@
 FROM bitwalker/alpine-elixir-phoenix:latest
 
+RUN apt-get -qq update
+RUN apt-get -qq install git build-essential
 RUN apk add --no-cache build-base
 
 # Set exposed ports
