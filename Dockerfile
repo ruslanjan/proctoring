@@ -1,6 +1,6 @@
 FROM bitwalker/alpine-elixir-phoenix:latest
 
-RUN apk add build-essential
+# RUN apk add build-essential
 RUN apk add --no-cache build-base
 
 # Set exposed ports
