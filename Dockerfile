@@ -1,5 +1,7 @@
 FROM bitwalker/alpine-elixir-phoenix:latest
 
+RUN apk add --no-cache build-base
+
 # Set exposed ports
 EXPOSE 5000
 ENV PORT=5000 MIX_ENV=prod
