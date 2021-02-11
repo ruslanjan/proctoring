@@ -1,14 +1,29 @@
 defmodule ProctoringWeb.ProctorChannel do
   use Phoenix.Channel
 
+  alias Proctoring.Accounts
+
   def join("proctor:", _payload, socket) do
     {:ok, socket}
   end
 
-  def join("proctor:" <> room, _payload, socket) do
+  def join("proctor:user:" <> user_id, _payload, socket) do
+    user = socket.assigns[:current_user]
+
+    if user_id != user.id do
+      {:error, "wrong_room"}
+    else
+      {:ok, socket}
+    end
+  end
+
+  def join("proctor:room:" <> room, _payload, socket) do
     user = socket.assigns[:current_user]
     IO.inspect(room)
-    if Integer.to_string(user.room) != room and not user.is_admin and false do
+
+    if Integer.to_string(user.room) != room and
+         not Enum.member?(Accounts.list_group_rooms(user.group), user.room) and
+         not user.is_admin do
       {:error, "wrong_room"}
     else
       {:ok, socket}

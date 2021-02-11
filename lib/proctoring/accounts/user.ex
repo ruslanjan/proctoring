@@ -8,7 +8,10 @@ defmodule Proctoring.Accounts.User do
     field :name, :string
     field :password, :string
     field :username, :string
+
     field :room, :integer
+    field :group, :string, default: ""
+
     field :is_proctor, :boolean, default: false
     field :is_admin, :boolean, default: false
 
@@ -27,8 +30,8 @@ defmodule Proctoring.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :name, :password, :room, :is_proctor, :is_admin])
-    |> validate_required([:username, :name, :password, :room, :is_proctor, :is_admin])
+    |> cast(attrs, [:username, :name, :password, :room, :is_proctor, :is_admin, :group])
+    |> validate_required([:username, :name, :password, :room, :is_proctor, :is_admin, :group])
     |> validate_length(:username, min: 3)
     |> unique_constraint(:username)
     |> hash_password()

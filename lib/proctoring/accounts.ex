@@ -27,6 +27,29 @@ defmodule Proctoring.Accounts do
     Repo.all(query)
   end
 
+  def list_users_in_group(group) when is_binary(group) do
+    query = from u in User,
+        where: u.group == ^group
+    Repo.all(query)
+  end
+
+  def list_groups() do
+    query = from u in User,
+        distinct: u.group,
+        order_by: [u.updated_at],
+        select: u.group
+    Repo.all(query)
+  end
+
+  def list_group_rooms(group) do
+    query = from u in User,
+        distinct: u.room,
+        where: u.group == ^group,
+        order_by: [u.updated_at],
+        select: u.room
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single user.
 
@@ -79,6 +102,7 @@ defmodule Proctoring.Accounts do
     user
     |> User.changeset(attrs)
     |> Repo.update()
+    ProctoringWeb.Endpoint.broadcast!("proctor", "new_message", message)
   end
 
   @doc """

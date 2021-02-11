@@ -7,6 +7,7 @@ defmodule Proctoring.Chat.Message do
   schema "chat_messages" do
     field :is_system, :boolean, default: false, null: false
     field :message, :string, default: "", null: false
+    field :group, :string, default: "", null: false
     field :from, :string, size: 64, default: "System"
 
     field :has_image, :boolean, default: false
@@ -21,7 +22,7 @@ defmodule Proctoring.Chat.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:is_system, :message, :from, :to_user_id, :has_image, :image, :image_extension])
+    |> cast(attrs, [:is_system, :message, :from, :to_user_id, :has_image, :image, :image_extension, :group])
     |> foreign_key_constraint(:to_user_id)
     |> validate_required([:is_system, :from])
   end
